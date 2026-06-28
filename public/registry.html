@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BRGY-PET · Animal Registry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-header"><div class="sidebar-logo">🐾</div><div><div class="sidebar-brand-name">BRGY-PET</div><div class="sidebar-brand-sub">Animal Tracking &amp; Reg.</div></div></div>
+    <div class="nav-section-label">Operations</div>
+    <a class="nav-item" href="dashboard.html"><span class="nav-icon"></span> Dashboard</a>
+    <a class="nav-item" href="registry.html"><span class="nav-icon"></span> Animal Registry</a>
+    <a class="nav-item" href="owners.html"><span class="nav-icon"></span> Owners</a>
+    <a class="nav-item" href="vaccinations.html"><span class="nav-icon"></span> Vaccinations</a>
+    <a class="nav-item" href="lost-found.html"><span class="nav-icon"></span> Lost &amp; Found</a>
+    <a class="nav-item" href="adoption.html"><span class="nav-icon"></span> Adoption</a>
+    <div class="nav-section-label">Admin</div>
+    <a class="nav-item" href="users.html"><span class="nav-icon"></span> User Management</a>
+    <div class="sidebar-footer"><div class="sidebar-footer-label">Active Coverage</div><div class="user-row">
+        <div class="user-row-main">
+          <div class="user-avatar" id="sidebar-avatar">BA</div>
+          <div class="user-info">
+            <div class="user-name" id="sidebar-user-name">Barangay Admin</div>
+            <div class="user-email" id="sidebar-user-email">admin@barangay.gov...</div>
+          </div>
+        </div>
+        <button class="logout-btn" id="logout-btn" title="Sign out">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign out
+        </button>
+      </div></div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-info"><div class="topbar-title">Animal Registry</div><div class="topbar-sub">All registered animals in the barangay.</div></div>
+      <div class="topbar-actions">
+        <button class="btn-primary" id="open-register-modal">+ Register Animal</button>
+      </div>
+    </div>
+    <div class="content page-animate">
+
+      <!-- Search bar standalone -->
+      <div class="search-wrap" style="margin-bottom: 12px;">
+        <span class="search-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </span>
+        <input class="search-input" id="registry-search" type="text" placeholder="Search by name, species, breed…"/>
+      </div>
+
+      <!-- Table card -->
+      <div class="card">
+        <div class="card-body">
+          <div class="table-wrap">
+            <table class="registry-table">
+              <thead><tr><th>Animal</th><th>Owner</th><th>Species</th><th>Status</th><th>Registered</th><th>Actions</th></tr></thead>
+              <tbody id="registry-body"><tr><td colspan="6"><div class="empty-state"><div class="empty-icon">🐾</div><p>Loading...</p></div></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Register / Edit Modal -->
+<div class="modal-overlay" id="register-modal">
+  <div class="modal modal-lg">
+    <div class="modal-header"><div class="modal-title" id="register-modal-title">Register New Pet</div><button class="modal-close" id="close-register-modal">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="f-edit-id"/>
+      <div class="form-group">
+        <label>Photo</label>
+        <div class="img-upload-wrap">
+          <img id="f-image-preview" src="" alt="" style="display:none; width:100%; max-height:160px; object-fit:cover; border-radius:8px; margin-bottom:10px;"/>
+          <label class="img-upload-label" for="f-image">Click to upload photo</label>
+          <input type="file" id="f-image" accept="image/*" style="display:none"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Animal Name *</label><input type="text" id="f-name" placeholder="e.g. Bantay"/></div>
+        <div class="form-group"><label>Species *</label>
+          <select id="f-species"><option value="">Select species</option><option>Dog</option><option>Cat</option><option>Bird</option><option>Rabbit</option><option>Other</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Breed</label><input type="text" id="f-breed" placeholder="e.g. Aspin"/></div>
+        <div class="form-group"><label>Color</label><input type="text" id="f-color" placeholder="e.g. Brown"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Age (years)</label><input type="number" id="f-age" min="0" placeholder="e.g. 2"/></div>
+        <div class="form-group"><label>Sex</label>
+          <select id="f-sex"><option value="">Select</option><option>Male</option><option>Female</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Vaccination Status</label>
+          <select id="f-status"><option value="Unvaccinated">Unvaccinated</option><option value="Partial">Partial</option><option value="Vaccinated">Vaccinated</option></select>
+        </div>
+        <div class="form-group"><label>Owner Name *</label><input type="text" id="f-owner" placeholder="e.g. Juan Dela Cruz"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Date Registered</label><input type="date" id="f-date"/></div>
+      </div>
+      <div class="form-group"><label>Notes</label><textarea id="f-notes" rows="2" placeholder="Any additional info…"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn-outline" id="cancel-register-btn">Cancel</button>
+      <button type="button" class="btn-primary" id="save-animal">Save Animal</button>
+    </div>
+  </div>
+</div>
+
+<!-- View Modal -->
+<div class="modal-overlay" id="view-modal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Pet Details</div><button class="modal-close" id="close-view-modal">✕</button></div>
+    <div class="modal-body" id="view-modal-body"></div>
+    <div class="modal-footer">
+      <button type="button" class="btn-outline" id="view-modal-close-btn">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/registry.js"></script>
+</body>
+</html>

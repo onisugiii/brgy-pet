@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BRGY-PET · Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/auth.css"/>
+</head>
+<body class="auth-body">
+
+  <div class="auth-card">
+
+    <!-- LEFT PANEL -->
+    <aside class="auth-panel">
+      <div class="auth-brand">
+        <div class="auth-brand-icon">
+          <i class="fa-solid fa-paw"></i>
+        </div>
+        <div>
+          <div class="auth-brand-name">BRGY-PET</div>
+          <div class="auth-brand-sub">Animal Tracking &amp; Registration</div>
+        </div>
+      </div>
+
+      <div class="auth-cover-area">
+        <img src="images/animals.jpg" alt="Animals" class="auth-cover-image"/>
+      </div>
+
+      <div class="auth-tagline">
+        <h2>Keeping every pet safe &amp; accounted for.</h2>
+        <p>Barangay-level animal tracking, vaccination records, and community care — all in one place.</p>
+      </div>
+    </aside>
+
+    <!-- RIGHT: SIGN IN ONLY -->
+    <div class="auth-form-side">
+      <div class="auth-form-box">
+        <h1 class="auth-heading">Welcome back</h1>
+        <p class="auth-sub">Sign in to your barangay admin account</p>
+
+        <div class="auth-form-view active" id="signin-form">
+          <form id="signin-form-el" novalidate>
+            <div class="form-group">
+              <label for="login-email">Email Address</label>
+              <input type="email" id="login-email" placeholder="admin@barangay.gov.ph" autocomplete="email"/>
+            </div>
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" placeholder="Enter your password" autocomplete="current-password"/>
+            </div>
+            <button type="submit" class="auth-btn-full">Sign in</button>
+          </form>
+          <div class="auth-link-row">Forgot password? <a href="#">Reset here</a></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>

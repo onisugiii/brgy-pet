@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BRGY-PET · Pet Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+ <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: #f3f4f6; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .card { background: white; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,.10); max-width: 420px; width: 100%; overflow: hidden; }
+    .card-top { background: linear-gradient(135deg, #1a3a2a 0%, #2d6a4f 100%); padding: 28px 24px 20px; text-align: center; color: white; }
+    .pet-photo { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,.4); margin-bottom: 12px; }
+    .pet-avatar-lg { width: 90px; height: 90px; border-radius: 50%; background: rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 700; color: white; margin: 0 auto 12px; }
+    .pet-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+    .pet-sub  { font-size: .88rem; opacity: .8; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: .75rem; font-weight: 600; margin-top: 8px; }
+    .badge-green  { background: #d1fae5; color: #065f46; }
+    .badge-yellow { background: #fef3c7; color: #92400e; }
+    .badge-red    { background: #fee2e2; color: #991b1b; }
+    .card-body { padding: 20px 24px; }
+    .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-size: .9rem; }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { color: #6b7280; font-weight: 500; }
+    .info-value { font-weight: 600; color: #111827; text-align: right; }
+    .brgy-footer { text-align: center; padding: 14px; background: #f9fafb; font-size: .75rem; color: #9ca3af; border-top: 1px solid #f3f4f6; }
+    .loading { text-align: center; padding: 60px 24px; color: #6b7280; }
+    .error-box { text-align: center; padding: 40px 24px; }
+    .error-box h2 { color: #991b1b; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+<div class="card" id="profile-card">
+  <div class="loading">Loading pet profile…</div>
+</div>
+<script>
+(async () => {
+  const params = new URLSearchParams(window.location.search);
+  const id     = params.get('id');
+  const card   = document.getElementById('profile-card');
+
+  if (!id) {
+    card.innerHTML = `<div class="error-box"><h2>Invalid QR Code</h2><p>No pet ID found in this QR code.</p></div>`;
+    return;
+  }
+
+  try {
+    const res = await fetch(`http://localhost:3000/api/animals/${id}`);
+    const pet = await res.json();
+
+    if (!res.ok || pet.error) {
+      card.innerHTML = `<div class="error-box"><h2>Pet Not Found</h2><p>This pet may have been removed from the registry.</p></div>`;
+      return;
+    }
+
+    const vaxMap   = { 'Vaccinated':'badge-green', 'Partial':'badge-yellow', 'Unvaccinated':'badge-red' };
+    const initials = pet.name.split(' ').map(w => w[0]).join('').substring(0,2).toUpperCase();
+
+    card.innerHTML = `
+      <div class="card-top">
+        ${pet.image ? `<img src="${pet.image}" class="pet-photo" alt="${pet.name}"/>` : `<div class="pet-avatar-lg">${initials}</div>`}
+        <div class="pet-name">${pet.name}</div>
+        <div class="pet-sub">${pet.breed || pet.species}</div>
+        <span class="badge ${vaxMap[pet.vax_status] || 'badge-yellow'}">${pet.vax_status}</span>
+      </div>
+      <div class="card-body">
+        <div class="info-row"><span class="info-label">Species</span><span class="info-value">${pet.species || '—'}</span></div>
+        <div class="info-row"><span class="info-label">Breed</span><span class="info-value">${pet.breed || '—'}</span></div>
+        <div class="info-row"><span class="info-label">Color / Markings</span><span class="info-value">${pet.color || '—'}</span></div>
+        <div class="info-row"><span class="info-label">Sex</span><span class="info-value">${pet.sex || '—'}</span></div>
+        <div class="info-row"><span class="info-label">Age</span><span class="info-value">${pet.age || '—'}</span></div>
+        <div class="info-row"><span class="info-label">Owner</span><span class="info-value">${pet.owner_name || '—'}</span></div>
+        ${pet.notes ? `<div class="info-row"><span class="info-label">Notes</span><span class="info-value">${pet.notes}</span></div>` : ''}
+      </div>
+      <div class="brgy-footer">🐾 BRGY-PET · Barangay Animal Registry<br/>If you found this pet, please contact the owner or your barangay hall.</div>
+    `;
+
+    await fetch('http://localhost:3000/api/scan-reports', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ animal_id: id, location: 'QR Scan', scanned_by: 'Public Scan' }),
+    }).catch(() => {});
+
+  } catch (err) {
+    card.innerHTML = `<div class="error-box"><h2>Connection Error</h2><p>Could not connect to the BRGY-PET server.</p></div>`;
+  }
+})();
+</script>
+</body>
+</html>

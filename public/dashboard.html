@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BRGY-PET · Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">🐾</div>
+      <div>
+        <div class="sidebar-brand-name">BRGY-PET</div>
+        <div class="sidebar-brand-sub">Animal Tracking &amp; Reg.</div>
+      </div>
+    </div>
+
+    <div class="nav-section-label">Operations</div>
+    <a class="nav-item" href="dashboard.html"><span class="nav-icon"></span> Dashboard</a>
+    <a class="nav-item" href="registry.html"><span class="nav-icon"></span> Animal Registry</a>
+    <a class="nav-item" href="owners.html"><span class="nav-icon"></span> Owners</a>
+    <a class="nav-item" href="vaccinations.html"><span class="nav-icon"></span> Vaccinations</a>
+    <a class="nav-item" href="lost-found.html"><span class="nav-icon"></span> Lost &amp; Found</a>
+    <a class="nav-item" href="adoption.html"><span class="nav-icon"></span> Adoption</a>
+    <div class="nav-section-label">Admin</div>
+    <a class="nav-item" href="users.html"><span class="nav-icon"></span> User Management</a>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-label">Active Coverage</div>
+      <div class="user-row">
+        <div class="user-row-main">
+          <div class="user-avatar" id="sidebar-avatar">BA</div>
+          <div class="user-info">
+            <div class="user-name" id="sidebar-user-name">Barangay Admin</div>
+            <div class="user-email" id="sidebar-user-email">admin@barangay.gov...</div>
+          </div>
+        </div>
+        <button class="logout-btn" id="logout-btn" title="Sign out">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign out
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-info">
+        <div class="topbar-title">Dashboard</div>
+        <div class="topbar-sub">Overview of your barangay pet registry.</div>
+      </div>
+      <div class="topbar-actions">
+        <a href="registry.html" class="btn-primary">+ Register Pet</a>
+      </div>
+    </div>
+
+    <div class="content page-animate">
+
+      <!-- Welcome Banner -->
+      <div class="welcome-banner">
+        <div class="welcome-banner-content">
+          <h2 class="welcome-banner-title">Keep your pets safe &amp; registered!</h2>
+          <p class="welcome-banner-desc">Register your animals with BRGY-PET for free vaccinations, lost pet alerts, and adoption support — all in one place.</p>
+          <div class="welcome-banner-actions">
+            <a href="registry.html" class="welcome-cta-primary">+ Register a Pet</a>
+            <a href="owners.html" class="welcome-cta-outline">Add Owner</a>
+          </div>
+        </div>
+        <div class="welcome-banner-illustration" aria-hidden="true">
+          <img src="https://assets.website-files.com/6364b6fd26e298b11fb9391f/6364b6fd26e2986228b93ce7_DrawKit0087_Animal_%26_Pets_Banner-min.png" class="wb-img" alt=""/>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+
+        <div class="stat-card stat-green">
+          <div class="stat-top">
+            <div class="stat-label">Total Animals</div>
+            <div class="stat-icon icon-green">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="4" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="20" cy="16" r="2"/><path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z"/></svg>
+            </div>
+          </div>
+          <div class="stat-number" id="stat-total">0</div>
+          <div class="stat-change up" id="stat-total-change">↑ 0 registered</div>
+        </div>
+
+        <div class="stat-card stat-blue">
+          <div class="stat-top">
+            <div class="stat-label">Vaccinated</div>
+            <div class="stat-icon icon-blue">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 2 4 4"/><path d="m17 7 3-3"/><path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5"/><path d="m9 11 4 4"/><path d="m5 19-3 3"/><path d="m14 4 6 6"/></svg>
+            </div>
+          </div>
+          <div class="stat-number" id="stat-vaccinated">0</div>
+          <div class="stat-change up" id="stat-coverage">↑ 0% coverage</div>
+        </div>
+
+        <div class="stat-card stat-orange">
+          <div class="stat-top">
+            <div class="stat-label">Lost &amp; Found</div>
+            <div class="stat-icon icon-orange">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </div>
+          </div>
+          <div class="stat-number" id="stat-lost">0</div>
+          <div class="stat-change down">Active cases</div>
+        </div>
+
+        <div class="stat-card stat-gold">
+          <div class="stat-top">
+            <div class="stat-label">Up for Adoption</div>
+            <div class="stat-icon icon-red">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+          </div>
+          <div class="stat-number" id="stat-adoption">0</div>
+          <div class="stat-change">Awaiting owners</div>
+        </div>
+
+      </div>
+
+      <!-- Recent Registrations -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Recent Registrations</div>
+            <div class="card-sub">Latest animals added to the registry</div>
+          </div>
+          <a href="registry.html" class="btn-outline">View all</a>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Animal</th>
+                <th>Owner</th>
+                <th>Species</th>
+                <th>Status</th>
+                <th>Registered</th>
+              </tr>
+            </thead>
+            <tbody id="recent-registrations-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

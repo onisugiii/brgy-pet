@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BRGY-PET · Scan Reports</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">🐾</div>
+      <div>
+        <div class="sidebar-brand-name">BRGY-PET</div>
+        <div class="sidebar-brand-sub">Animal Tracking &amp; Reg.</div>
+      </div>
+    </div>
+    <div class="nav-section-label">Operations</div>
+    <a class="nav-item" href="dashboard.html"><span class="nav-icon"></span> Dashboard</a>
+    <a class="nav-item" href="registry.html"><span class="nav-icon"></span> Animal Registry</a>
+    <a class="nav-item" href="owners.html"><span class="nav-icon"></span> Owners</a>
+    <a class="nav-item" href="vaccinations.html"><span class="nav-icon"></span> Vaccinations</a>
+    <a class="nav-item" href="lost-found.html"><span class="nav-icon"></span> Lost &amp; Found</a>
+    <a class="nav-item" href="scan-reports.html"><span class="nav-icon"></span> Scan Reports</a>
+    <a class="nav-item" href="adoption.html"><span class="nav-icon"></span> Adoption</a>
+    <div class="nav-section-label">Admin</div>
+    <a class="nav-item" href="users.html"><span class="nav-icon"></span> User Management</a>
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-label">Active Coverage</div>
+      <div class="user-row">
+        <div class="user-row-main">
+          <div class="user-avatar" id="sidebar-avatar">BA</div>
+          <div class="user-info">
+            <div class="user-name" id="sidebar-user-name">Barangay Admin</div>
+            <div class="user-email" id="sidebar-user-email">admin@barangay.gov...</div>
+          </div>
+        </div>
+        <button class="logout-btn" id="logout-btn" title="Sign out">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign out
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-info">
+        <div class="topbar-title">Scan Reports</div>
+        <div class="topbar-sub">Generate QR codes for pet collars — scan to view pet profile.</div>
+      </div>
+    </div>
+
+    <div class="content page-animate">
+
+      <div class="card qr-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Generate Pet QR Code</div>
+            <div class="card-sub">Select a registered pet to generate a printable QR code for their collar tag.</div>
+          </div>
+        </div>
+        <div class="qr-form-body">
+          <div class="qr-select-row">
+            <div class="qr-select-wrap">
+              <label class="qr-label">Select Animal</label>
+              <select id="qr-animal-select">
+                <option value="">Loading animals...</option>
+              </select>
+            </div>
+            <button class="btn-primary" id="generate-qr-btn">Generate QR</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="qr-result" style="display:none; margin-top:20px;">
+        <div class="card">
+          <div class="qr-result-body">
+            <div class="qr-left">
+              <div id="qr-code-box"></div>
+              <button class="btn-primary" id="print-qr-btn" style="margin-top:14px; font-size:.82rem; padding:9px 20px;">🖨 Print QR Tag</button>
+            </div>
+            <div class="qr-right">
+              <div class="qr-preview-label">Pet Profile Preview</div>
+              <div id="pet-photo-wrap" style="display:none; margin-bottom:12px;">
+                <img id="qr-pet-photo" style="width:72px;height:72px;object-fit:cover;border-radius:10px;border:1.5px solid #daeee3;" alt="Pet photo"/>
+              </div>
+              <table class="qr-info-table">
+                <tr><td class="qi-key">Name</td><td id="qi-name" class="qi-val">—</td></tr>
+                <tr><td class="qi-key">Breed</td><td id="qi-breed" class="qi-val">—</td></tr>
+                <tr><td class="qi-key">Species</td><td id="qi-species" class="qi-val">—</td></tr>
+                <tr><td class="qi-key">Color</td><td id="qi-color" class="qi-val">—</td></tr>
+                <tr><td class="qi-key">Sex</td><td id="qi-sex" class="qi-val">—</td></tr>
+                <tr><td class="qi-key">Owner</td><td id="qi-owner" class="qi-val">—</td></tr>
+                <tr><td class="qi-key">Vaccination</td><td id="qi-vax" class="qi-val">—</td></tr>
+              </table>
+              <div class="qr-hint"> Print and attach to the pet's collar. Anyone who scans it will see this profile.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+      <div id="qr-result" style="display:none;">
+        <div class="card">
+          <div class="card-body" style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;padding:24px;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+              <div id="qr-code-box" style="background:white;padding:16px;border-radius:12px;border:1.5px solid var(--border);display:inline-block;"></div>
+              <button class="btn-primary" id="print-qr-btn" style="font-size:.82rem;padding:8px 18px;">🖨 Print QR Tag</button>
+            </div>
+            <div style="flex:1;min-width:200px;">
+              <div style="font-size:.75rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Pet Profile Preview</div>
+              <div id="pet-photo-wrap" style="margin-bottom:12px;display:none;">
+                <img id="qr-pet-photo" style="width:80px;height:80px;object-fit:cover;border-radius:10px;border:1.5px solid var(--border);" alt="Pet photo"/>
+              </div>
+              <table style="font-size:.88rem;border-collapse:collapse;width:100%;">
+                <tr><td style="padding:5px 12px 5px 0;color:var(--text-muted);font-weight:600;width:120px;">Name</td><td id="qi-name" style="padding:5px 0;font-weight:600;">—</td></tr>
+                <tr><td style="padding:5px 12px 5px 0;color:var(--text-muted);font-weight:600;">Breed</td><td id="qi-breed" style="padding:5px 0;">—</td></tr>
+                <tr><td style="padding:5px 12px 5px 0;color:var(--text-muted);font-weight:600;">Species</td><td id="qi-species" style="padding:5px 0;">—</td></tr>
+                <tr><td style="padding:5px 12px 5px 0;color:var(--text-muted);font-weight:600;">Color</td><td id="qi-color" style="padding:5px 0;">—</td></tr>
+                <tr><td style="padding:5px 12px 5px 0;color:var(--text-muted);font-weight:600;">Sex</td><td id="qi-sex" style="padding:5px 0;">—</td></tr>
+                <tr><td style="padding:5px 12px 5px 0;color:var(--text-muted);font-weight:600;">Owner</td><td id="qi-owner" style="padding:5px 0;font-weight:600;">—</td></tr>
+                <tr><td style="padding:5px 12px 5px 0;color:var(--text-muted);font-weight:600;">Vaccination</td><td id="qi-vax" style="padding:5px 0;">—</td></tr>
+              </table>
+              <div style="margin-top:12px;padding:10px 14px;background:var(--bg-hover,#f3f4f6);border-radius:8px;font-size:.78rem;color:var(--text-muted);">
+                📌 Print this QR and attach it to the pet's collar. Anyone who scans it will see this profile.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="print-area" style="display:none;">
+  <div id="print-tag"></div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/scan-reports.js"></script>
+</body>
+</html>
