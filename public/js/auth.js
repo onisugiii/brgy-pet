@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const password = document.getElementById('login-password').value;
       if (!email || !password) return showError('Please fill in all fields.');
       try {
-        const data = await fetch('http://localhost:3000/api/auth/signin', {
+        const data = await fetch('https://brgy-pet-production.up.railway.app/api/auth/signin', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const barangay = document.getElementById('reg-brgy').value.trim();
       if (!name || !email || !password || !barangay) return showError('Please fill in all fields.');
       try {
-        const data = await fetch('http://localhost:3000/api/auth/signup', {
+        const data = await fetch('https://brgy-pet-production.up.railway.app/api/auth/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, password, barangay }),
@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
       err = document.createElement('p');
       err.id = 'auth-error';
       err.style.cssText = 'color:#9b1c1c;background:#fde8e8;border-radius:7px;padding:9px 14px;font-size:.83rem;margin-bottom:14px;';
+      err.className = 'auth-error-msg';
     }
     err.textContent = msg;
     const active = document.querySelector('.auth-form-view.active');
