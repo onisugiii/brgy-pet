@@ -4,7 +4,7 @@
    through here. Included on every page.
 ════════════════════════════════════════ */
 
-const API = 'http://localhost:3000/api';
+const API = 'https://brgy-pet-production.up.railway.app/api';
 
 function getToken() {
   return sessionStorage.getItem('brgy_token');
