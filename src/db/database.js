@@ -1,12 +1,10 @@
 const { Pool } = require('pg');
 const dns = require('dns');
 dns.setDefaultResultOrder('ipv4first');
-
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
-
 async function connectDB() {
   try {
     const client = await pool.connect();
@@ -18,11 +16,9 @@ async function connectDB() {
     process.exit(1);
   }
 }
-
 async function query(text, params) {
   return pool.query(text, params);
 }
-
 async function initSchema() {
   await pool.query(`
     CREATE TABLE IF NOT EXISTS users (
@@ -34,7 +30,6 @@ async function initSchema() {
       role       TEXT NOT NULL DEFAULT 'admin',
       created_at TIMESTAMP DEFAULT NOW()
     );
-
     CREATE TABLE IF NOT EXISTS owners (
       id         SERIAL PRIMARY KEY,
       name       TEXT NOT NULL,
@@ -43,7 +38,6 @@ async function initSchema() {
       barangay   TEXT,
       created_at TIMESTAMP DEFAULT NOW()
     );
-
     CREATE TABLE IF NOT EXISTS animals (
       id            SERIAL PRIMARY KEY,
       name          TEXT NOT NULL,
@@ -59,7 +53,6 @@ async function initSchema() {
       notes         TEXT,
       registered_at TIMESTAMP DEFAULT NOW()
     );
-
     CREATE TABLE IF NOT EXISTS vaccinations (
       id        SERIAL PRIMARY KEY,
       animal_id INTEGER NOT NULL REFERENCES animals(id) ON DELETE CASCADE,
@@ -69,7 +62,6 @@ async function initSchema() {
       next_due  TIMESTAMP,
       notes     TEXT
     );
-
     CREATE TABLE IF NOT EXISTS lost_found (
       id          SERIAL PRIMARY KEY,
       animal_id   INTEGER REFERENCES animals(id) ON DELETE SET NULL,
@@ -81,7 +73,6 @@ async function initSchema() {
       status      TEXT NOT NULL DEFAULT 'active',
       reported_at TIMESTAMP DEFAULT NOW()
     );
-
     CREATE TABLE IF NOT EXISTS adoptions (
       id          SERIAL PRIMARY KEY,
       animal_id   INTEGER NOT NULL REFERENCES animals(id) ON DELETE CASCADE,
@@ -92,7 +83,6 @@ async function initSchema() {
       status      TEXT NOT NULL DEFAULT 'available',
       listed_at   TIMESTAMP DEFAULT NOW()
     );
-
     CREATE TABLE IF NOT EXISTS scan_reports (
       id         SERIAL PRIMARY KEY,
       animal_id  INTEGER REFERENCES animals(id) ON DELETE SET NULL,
@@ -101,7 +91,6 @@ async function initSchema() {
       notes      TEXT,
       scanned_at TIMESTAMP DEFAULT NOW()
     );
-
     CREATE TABLE IF NOT EXISTS activity_log (
       id        SERIAL PRIMARY KEY,
       color     TEXT NOT NULL DEFAULT 'blue',
@@ -109,8 +98,14 @@ async function initSchema() {
       actor     TEXT,
       logged_at TIMESTAMP DEFAULT NOW()
     );
+    CREATE TABLE IF NOT EXISTS password_resets (
+      id           SERIAL PRIMARY KEY,
+      user_id      INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      new_password TEXT NOT NULL,
+      status       TEXT NOT NULL DEFAULT 'pending',
+      requested_at TIMESTAMP DEFAULT NOW()
+    );
   `);
   console.log('✔  Tables ready');
 }
-
 module.exports = { connectDB, query };
