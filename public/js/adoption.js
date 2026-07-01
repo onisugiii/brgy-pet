@@ -98,9 +98,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         <td>${a.description || '—'}</td>
         <td>${a.listed_by || '—'}</td>
         <td><span class="badge ${a.status==='available'?'badge-green':'badge-gray'}">${a.status}</span></td>
-        <td style="display:flex;gap:6px;flex-wrap:wrap;">
+        <td style="display:flex;gap:4px;flex-wrap:nowrap;align-items:center;">
           <button class="btn-sm btn-edit" onclick="editAdopt(${a.id})">Edit</button>
-          ${a.status==='available' ? `<button class="btn-sm btn-adopt" onclick="markAdopted(${a.id},'${a.animal_name}')">Mark Adopted</button>` : ''}
+          ${a.status==='available' ? `<button class="btn-sm btn-adopt" onclick="markAdopted(${a.id},'${a.animal_name}')" style="white-space:nowrap;font-size:11px;padding:4px 8px;">Mark Adopted</button>` : ''}
           <button class="btn-sm btn-danger" onclick="deleteAdopt(${a.id})">Delete</button>
         </td>
       </tr>`).join('');

@@ -61,8 +61,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     tbody.innerHTML = data.map(o => `
       <tr>
         <td>${o.name}</td>
-        <td>${o.address || '—'}</td>
         <td>${o.contact || '—'}</td>
+        <td>${o.address || '—'}</td>
         <td>${o.barangay || '—'}</td>
         <td>
           <button class="btn-sm btn-action" onclick="editOwner('${o.id}')">Edit</button>

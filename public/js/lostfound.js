@@ -84,9 +84,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         <td>${r.last_seen || '—'}</td>
         <td><span class="badge ${r.status==='active'?'badge-yellow':'badge-gray'}">${r.status}</span></td>
         <td>
-          ${r.status==='active' ? `<button class="btn-sm btn-action" onclick="resolveLF(${r.id})">Resolve</button>` : ''}
-          <button class="btn-sm btn-action" onclick="editLF(${r.id})">Edit</button>
-          <button class="btn-sm btn-danger" onclick="deleteLF(${r.id})">Delete</button>
+          <div style="display:flex;gap:4px;flex-wrap:nowrap;">
+            ${r.status==='active' ? `<button class="btn-sm btn-action" onclick="resolveLF(${r.id})">Resolve</button>` : ''}
+            <button class="btn-sm btn-action" onclick="editLF(${r.id})">Edit</button>
+            <button class="btn-sm btn-danger" onclick="deleteLF(${r.id})">Delete</button>
+          </div>
         </td>
       </tr>`).join('');
   }

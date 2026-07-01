@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionStorage.setItem('brgy_user_email', data.user.email);
         sessionStorage.setItem('brgy_barangay',   data.user.barangay);
         window.location.href = 'dashboard.html';
-      } catch { showError('Cannot connect to server. Make sure npm start is running.'); }
+      } catch(err) { showError('Error: ' + err.message); }
     });
   }
 
