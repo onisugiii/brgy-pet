@@ -1981,3 +1981,8 @@ tbody tr:nth-child(even):hover {
   background: #d1ecdc !important;
   border-color: #1a3328 !important;
 }
+
+.badge-adopted {
+  background: #e8f0fe;
+  color: #1a3a8f;
+}

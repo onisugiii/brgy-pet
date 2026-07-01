@@ -58,6 +58,9 @@ router.patch('/:id/adopt', async (req, res) => {
   try {
     const result = await query(`UPDATE adoptions SET status = 'adopted' WHERE id = $1 RETURNING *`, [req.params.id]);
     if (!result.rows[0]) return res.status(404).json({ error: 'Listing not found.' });
+    if (result.rows[0].animal_id) {
+      await query(`UPDATE animals SET vax_status = 'Adopted', notes = COALESCE(notes || ' | ', '') || 'Adopted via adoption listing.' WHERE id = $1`, [result.rows[0].animal_id]);
+    }
     await query(`INSERT INTO activity_log (color, text, actor) VALUES ($1,$2,$3)`,
       ['green', `<strong>${result.rows[0].animal_name}</strong> has been adopted`, req.user.name]);
     res.json(result.rows[0]);

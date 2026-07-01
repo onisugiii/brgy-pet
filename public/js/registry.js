@@ -218,10 +218,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   function initials(n) { return n.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase(); }
+
   function badgeHtml(s) {
-    const m = { 'Vaccinated':'badge-green','Partial':'badge-yellow','Unvaccinated':'badge-red' };
+    const m = {
+      'Vaccinated':   'badge-green',
+      'Partial':      'badge-yellow',
+      'Unvaccinated': 'badge-red',
+      'Adopted':      'badge-adopted'
+    };
     return `<span class="badge ${m[s]||'badge-gray'}">${s}</span>`;
   }
+
   function fmtDate(d) {
     if (!d) return '—';
     return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
