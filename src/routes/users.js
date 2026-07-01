@@ -56,4 +56,36 @@ router.delete('/:id', requireSuperAdmin, async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+// ── Password reset requests (superadmin only) ──
+router.get('/reset-requests', requireSuperAdmin, async (req, res) => {
+  try {
+    const result = await query(`
+      SELECT pr.id, pr.user_id, pr.status, pr.requested_at, u.name, u.email
+      FROM password_resets pr
+      JOIN users u ON u.id = pr.user_id
+      WHERE pr.status = 'pending'
+      ORDER BY pr.requested_at DESC
+    `);
+    res.json(result.rows);
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+router.patch('/reset-requests/:id/approve', requireSuperAdmin, async (req, res) => {
+  try {
+    const reset = await query(`SELECT * FROM password_resets WHERE id = $1 AND status = 'pending'`, [req.params.id]);
+    if (!reset.rows[0]) return res.status(404).json({ error: 'Reset request not found.' });
+    await query(`UPDATE users SET password = $1 WHERE id = $2`, [reset.rows[0].new_password, reset.rows[0].user_id]);
+    await query(`UPDATE password_resets SET status = 'approved' WHERE id = $1`, [req.params.id]);
+    res.json({ message: 'Password reset approved and applied.' });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+router.patch('/reset-requests/:id/reject', requireSuperAdmin, async (req, res) => {
+  try {
+    const result = await query(`UPDATE password_resets SET status = 'rejected' WHERE id = $1 AND status = 'pending' RETURNING id`, [req.params.id]);
+    if (!result.rows[0]) return res.status(404).json({ error: 'Reset request not found.' });
+    res.json({ message: 'Reset request rejected.' });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
 module.exports = router;
