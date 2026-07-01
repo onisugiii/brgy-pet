@@ -12,6 +12,53 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   await load();
 
+  if (isSuperAdmin) {
+    document.getElementById('reset-requests-card').style.display = 'block';
+    await loadResetRequests();
+  }
+
+  async function loadResetRequests() {
+    try {
+      const requests = await api.get('/users/reset-requests');
+      const tbody = document.getElementById('reset-requests-body');
+      const countBadge = document.getElementById('reset-requests-count');
+      if (requests.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><p>No pending requests.</p></div></td></tr>`;
+        countBadge.style.display = 'none';
+      } else {
+        countBadge.textContent = `${requests.length} pending`;
+        countBadge.style.display = 'inline-block';
+        tbody.innerHTML = requests.map(r => `
+          <tr>
+            <td>${r.name}</td>
+            <td>${r.email}</td>
+            <td>${new Date(r.requested_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</td>
+            <td style="display:flex;gap:6px;">
+              <button class="btn-sm btn-edit" onclick="approveReset(${r.id},'${r.name}')">Approve</button>
+              <button class="btn-sm btn-danger" onclick="rejectReset(${r.id},'${r.name}')">Reject</button>
+            </td>
+          </tr>`).join('');
+      }
+    } catch(err) { console.error(err); }
+  }
+
+  window.approveReset = async (id, name) => {
+    if (!confirm(`Approve password reset for ${name}?`)) return;
+    try {
+      await api.patch(`/users/reset-requests/${id}/approve`);
+      alert(`Password reset approved for ${name}.`);
+      await loadResetRequests();
+    } catch(err) { alert('Error: ' + err.message); }
+  };
+
+  window.rejectReset = async (id, name) => {
+    if (!confirm(`Reject password reset for ${name}?`)) return;
+    try {
+      await api.patch(`/users/reset-requests/${id}/reject`);
+      await loadResetRequests();
+    } catch(err) { alert('Error: ' + err.message); }
+  };
+
   const overlay = document.getElementById('user-modal');
   document.getElementById('open-user-modal')?.addEventListener('click', () => overlay?.classList.add('open'));
   document.getElementById('close-user-modal')?.addEventListener('click', closeModal);
